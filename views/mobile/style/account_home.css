@@ -1,0 +1,21 @@
+.status-locked {
+    color: lightgreen;
+}
+
+.status-unlocked {
+    color: red;
+}
+
+#lockButton {
+    padding: 1rem;  /* Adds space inside the button */
+    border-radius: 50%;  /* Ensures the button is circular */
+    height: 10rem; 
+    width: 10rem;
+    border: 0.5rem solid gray;
+    transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+#lockButton:hover {
+    background: lightgreen !important;
+    box-shadow: 0 0 15px 5px lightgreen  /* Creates the glowing effect */
+}

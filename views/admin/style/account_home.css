@@ -1,0 +1,19 @@
+.hover-bg-light:hover {
+    background-color: #212529;
+    border: 2px solid lightgray;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #e4e9f1;
+    border-radius: 0.5rem;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}

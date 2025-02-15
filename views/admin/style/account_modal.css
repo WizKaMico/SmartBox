@@ -1,0 +1,81 @@
+/* Modal Container */
+.modal-dialog {
+    max-width: 500px;
+    margin: 30px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Header */
+.modal-header {
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+}
+
+.modal-header .close {
+    font-size: 30px;
+    color: #333;
+}
+
+.modal-header .close:hover {
+    color: #d9534f;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 30px;
+    font-size: 16px;
+}
+
+.modal-body .container-fluid {
+    padding: 0;
+}
+
+/* Modal Footer */
+.modal-footer {
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+    padding: 15px;
+    text-align: right;
+}
+
+/* Button Styling */
+.modal-footer .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.modal-footer .btn-default {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.modal-footer .btn-default:hover {
+    background-color: #e53935;
+}
+
+.modal-footer .btn-success {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.modal-footer .btn-success:hover {
+    background-color: #45a049;
+}
+
+/* Modal Background */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Make the modal responsive */
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 20px;
+        width: 100%;
+    }
+}

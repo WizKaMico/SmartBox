@@ -1,0 +1,49 @@
+
+        /* General Styles */
+        .notif-box {
+            background-color: #343a40; /* Dark background color */
+            color: white;              /* White text color */
+            border-radius: 0.75rem;    /* Rounded corners */
+            padding: 20px;             /* Padding inside each box */
+            width: 100%;               /* Full width */
+            margin-top: 20px;          /* Space between each notification */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+        
+        .notif-box .fw-bold {
+            font-weight: 700; /* Bold text for activity label */
+            color: #f8f9fa;   /* Light color for contrast */
+        }
+        
+        .notif-box .d-flex {
+            display: flex;
+            justify-content: space-between; /* Space out date and text */
+            align-items: center;            /* Vertically center align */
+        }
+        
+        .notif-box .text-light {
+            color: #6c757d; /* Light grey color for the "Date" label */
+        }
+        
+        .notif-box .text-end {
+            text-align: right; /* Right align the date */
+        }
+        
+        .notif-box .mb-1 {
+            margin-bottom: 0.25rem; /* Small margin between elements */
+        }
+        
+        /* Hover Effect */
+        .notif-box:hover {
+            background-color: #495057; /* Darker background on hover */
+            cursor: pointer; /* Pointer cursor to indicate interactivity */
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .notif-box {
+                padding: 15px; /* Adjust padding on smaller screens */
+            }
+        }
+        
+        

@@ -1,0 +1,9 @@
+<?php 
+if(!empty($_GET['code']))
+{
+    include('./routes/home/new.php');
+}
+else
+{
+    include('./routes/home/old.php');
+}

@@ -1,0 +1,18 @@
+.digit {
+    width: 3rem;
+    font-size: 4rem;
+}
+
+.col-4 {
+    display: flex;
+    justify-content: center;
+}
+
+.keypad button {
+    height: 4rem;
+    width: 8rem;
+    margin: 0.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 3rem;
+}

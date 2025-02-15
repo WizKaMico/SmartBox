@@ -1,0 +1,25 @@
+{
+  "name": "validator",
+  "version": "1.0.0",
+  "main": "main.mjs",
+  "type": "module",
+  "scripts": {
+    "app:dev": "nodemon ./src/app.mjs",
+    "app:prod": "node ./src/app.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
