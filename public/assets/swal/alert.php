@@ -70,6 +70,22 @@
                     </script>';
                 }
 
+            } else if($_GET['message'] == 'successfullyverified'){
+
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Account successfully Verified",
+                            text: "",
+                            confirmButtonText: "Close",
+                            iconColor:"#000000",
+                            confirmButtonColor: "#000000"
+                        });
+                    });
+                </script>';
+
             } else if($_GET['message'] == 'loginfail'){
 
                 echo '
