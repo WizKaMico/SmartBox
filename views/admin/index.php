@@ -42,7 +42,7 @@ if(!empty($_GET['action']))
                                     $fullname = $firstname.' '.$lastname;
                                     $code = $result[0]['code'];
                                     require("../../public/assets/mail/accountCreation.php");
-                                    Header('Location:?view=SUCCESS');
+                                    Header('Location:?view=SIGNUP&message=creationSuccess'); 
                                     exit; 
                                 
                             } else {
@@ -56,7 +56,7 @@ if(!empty($_GET['action']))
                     }
                 } catch (Exception $e) {
                     echo "Error: " . $e->getMessage();
-                    Header('Location:?view=SIGNUP&message=failed'); 
+                    Header('Location:?view=SIGNUP&message=creationFailed'); 
                     exit; 
                 }
             } else {
@@ -127,14 +127,32 @@ if(!empty($_GET['action']))
                             $account = $portCont->specificAccountLoginAdmin($email, $password);
                             if(!empty($account))
                             {
-                                $_SESSION['user_id'] = $account[0]["user_id"];
-                                header('Location: ./account/?view=HOME');
+                                if($account[0]["user_id"] > 0)
+                                {
+                                    if($account[0]["status"] == 'VERIFIED')
+                                    {
+                                        $_SESSION['user_id'] = $account[0]["user_id"];
+                                        header('Location: ./account/?view=HOME');
+                                    }
+                                    else
+                                    {
+                                        Header('Location:?view=HOME&message=unverified');
+                                    }
+                                }
+                                else
+                                {
+                                    Header('Location:?view=HOME&message=failpass');
+                                }
                             }
                         }
                         catch(Exception $e)
                         {
                             Header('Location:?view=HOME&message=failed');
                         }
+                    }
+                    else
+                    {
+                        Header('Location:?view=HOME&message=loginfail');
                     }
                 }
             break;
@@ -154,7 +172,7 @@ if(!empty($_GET['action']))
   <link rel="stylesheet" href="../../public/assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-
+<?php include('../../public/assets/swal/alert.php'); ?>
 <body class="d-flex min-vh-100" style="background-color: #333;">
  
 <?php 

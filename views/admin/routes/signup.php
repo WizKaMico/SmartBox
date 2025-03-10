@@ -16,29 +16,29 @@
             <input type="hidden" name="token">
             <div class="d-flex flex-column mb-4">
                 <label for="" class="fw-bold mb-2">Image</label>
-                <input type="file" name="image" class="form-control border-secondary w-100">
+                <input type="file" name="image" class="form-control border-secondary w-100" required="">
             </div>
             <div class='d-flex'>
                 <div class="d-flex flex-column mb-4 me-4 w-100">
                     <label for="" class="fw-bold mb-2">First Name</label>
-                    <input type="text" name="firstname" class="form-control border-secondary" placeholder="Enter your first name">
+                    <input type="text" name="firstname" class="form-control border-secondary" placeholder="Enter your first name" required="">
                 </div>
                 <div class="d-flex flex-column mb-4 w-100">
                     <label for="" class="fw-bold mb-2">Last Name</label>
-                    <input type="text" name="lastname" class="form-control border-secondary" placeholder="Enter your last name">
+                    <input type="text" name="lastname" class="form-control border-secondary" placeholder="Enter your last name" required="">
                 </div>
             </div>
             <div class="d-flex flex-column mb-4">
                 <label for="" class="fw-bold mb-2">Contact</label>
-                <input type="tel" name="contact" maxlength="11" pattern="[0-9]*" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="form-control border-secondary" placeholder="Enter your contact">
+                <input type="tel" name="contact" maxlength="11" pattern="[0-9]*" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="form-control border-secondary" placeholder="Enter your contact" required="">
             </div>
             <div class="d-flex flex-column mb-4">
                 <label for="" class="fw-bold mb-2">Email</label>
-                <input type="text" name="email" class="form-control border-secondary" placeholder="Enter your email address">
+                <input type="text" name="email" class="form-control border-secondary" placeholder="Enter your email address" required="">
             </div>
             <div class="d-flex flex-column mb-4">
                 <label for="" class="fw-bold mb-2">Password</label>
-                <input type="password" name="password" class="form-control border-secondary" placeholder="Enter your password">
+                <input type="password" name="password" class="form-control border-secondary" placeholder="Enter your password" required="">
             </div>
 
             <!-- Error Display Section -->

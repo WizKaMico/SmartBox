@@ -429,17 +429,17 @@
         // $mail->Port = 587;    
         $mail->Host = 'smtp.gmail.com';                       // Outlook SMTP server
         $mail->SMTPAuth = true;                                // Enable SMTP authentication
-        $mail->Username = 'revcoreitsolution@gmail.com';   // Your Outlook email address
-        $mail->Password = 'ivru frfb tmts tswe';                 // Use your generated App Password if 2FA is enabled
+        $mail->Username = 'smart.boxverify@gmail.com';   // Your Outlook email address
+        $mail->Password = 'ipix ufsz rpui qakw';                 // Use your generated App Password if 2FA is enabled
         $mail->SMTPSecure = "ssl";     // Use STARTTLS encryption
         $mail->Port = 465;                                  
 
         //Send Email
-        $mail->setFrom('revcoreitsolution@gmail.com');
+        $mail->setFrom('smart.boxverify@gmail.com');
         
         //Recipients
         $mail->addAddress($email);              
-        $mail->addReplyTo('revcoreitsolution@gmail.com');
+        $mail->addReplyTo('smart.boxverify@gmail.com');
         
         //Content
         $mail->isHTML(true);                                  

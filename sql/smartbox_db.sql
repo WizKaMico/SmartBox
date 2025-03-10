@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2025 at 11:40 AM
+-- Generation Time: Mar 10, 2025 at 09:33 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -228,7 +228,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_UserAccountAdminLogin` (IN `e
         SELECT user_id, 'LOGGED IN' 
         FROM smart_users SU 
         WHERE SU.email = email AND SU.password = password;
-        SELECT SU.user_id, SU.email, SU.firstname, SU.lastname, SU.contact
+        SELECT SU.user_id, SU.email, SU.firstname, SU.lastname, SU.contact, SU.status
         FROM smart_users SU
         WHERE SU.email = email AND SU.password = password;
     ELSE
@@ -268,7 +268,8 @@ CREATE TABLE `smart_locker` (
 --
 
 INSERT INTO `smart_locker` (`id`, `locker`, `size`, `dimension`, `price`, `status`, `access`, `date_created`) VALUES
-(1, '001', 'Medium', '136mm x 125mm', 120.00, 'Occupied', 'Unlock', '2025-02-08');
+(1, '001', 'Medium', '136mm x 125mm', 120.00, 'Occupied', 'Unlock', '2025-02-08'),
+(2, '002', 'Medium', '136mm x 125mm', 120.00, 'Available', 'Unlock', '2025-03-10');
 
 -- --------------------------------------------------------
 
@@ -425,7 +426,17 @@ CREATE TABLE `smart_users_history` (
 --
 
 INSERT INTO `smart_users_history` (`sid`, `user_id`, `activity`, `date_created`) VALUES
-(1, 1, 'LOGGED IN', '2025-02-11');
+(1, 1, 'LOGGED IN', '2025-02-11'),
+(2, 1, 'LOGGED IN', '2025-03-10'),
+(3, 1, 'LOGGED IN', '2025-03-10'),
+(4, 1, 'LOGGED IN', '2025-03-10'),
+(5, 1, 'LOGGED IN', '2025-03-10'),
+(6, 1, 'LOGGED IN', '2025-03-10'),
+(7, 1, 'LOGGED IN', '2025-03-10'),
+(8, 1, 'LOGGED IN', '2025-03-10'),
+(9, 1, 'LOGGED IN', '2025-03-10'),
+(10, 1, 'LOGGED IN', '2025-03-10'),
+(11, 1, 'LOGGED IN', '2025-03-10');
 
 -- --------------------------------------------------------
 
@@ -518,7 +529,7 @@ ALTER TABLE `smart_users_logs`
 -- AUTO_INCREMENT for table `smart_locker`
 --
 ALTER TABLE `smart_locker`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `smart_lockercredentials`
@@ -554,7 +565,7 @@ ALTER TABLE `smart_users`
 -- AUTO_INCREMENT for table `smart_users_history`
 --
 ALTER TABLE `smart_users_history`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `smart_users_logs`

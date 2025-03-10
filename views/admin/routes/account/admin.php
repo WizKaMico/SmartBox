@@ -3,7 +3,7 @@
         <div class="row g-3">
             <div class="col-12">
                 <div class="bg-white rounded shadow-sm mb-4 p-4">
-                <a href="#userCreate" class="btn btn-success" data-toggle="modal" data-backdrop="false">Create New User</a>
+                <a href="#userCreate" class="btn btn-success" data-toggle="modal" data-backdrop="false" style="Display:none;">Create New User</a>
                 <hr />
                 <table id="accountLockerTable" class="table table-borderless">
                     <thead>
@@ -21,22 +21,23 @@
                           $user = $portCont->smart_users();
                             if (!empty($user)) {
                               foreach ($user as $key => $user) {
+                                if($account[0]['user_id'] == $user['user_id']){
                         ?>
-                        <tr>
-                            <td><?php echo $user['user_id']; ?></td>
-                            <td><?php echo $user['image']; ?></td>
-                            <td><?php echo $user['firstname']; ?> <?php echo $user['lastname']; ?></td>
-                            <td><?php echo $user['contact']; ?></td>
-                            <td><?php echo $user['status']; ?></td>
-                            <td>
-                               <!-- Locker Edit Trigger Button -->
-                               <a href="#useredit_<?php echo $user['user_id']; ?>" class="btn btn-success" data-toggle="modal" data-backdrop="false"><i class="fa fa-edit"></i> Edit</a>
-                               <a href='#userdelete_<?php echo $user['user_id']; ?>' class="btn btn-danger" data-toggle='modal' data-backdrop='false'><i class="fa fa-trash"></i> Delete</a>
-                            </td>
-                        
-                        </tr>
-                        <?php include('../modal/modal.php'); ?>
-                        <?php } } ?>
+                                <tr>
+                                    <td><?php echo $user['user_id']; ?></td>
+                                    <td><?php echo $user['image']; ?></td>
+                                    <td><?php echo $user['firstname']; ?> <?php echo $user['lastname']; ?></td>
+                                    <td><?php echo $user['contact']; ?></td>
+                                    <td><?php echo $user['status']; ?></td>
+                                    <td>
+                                    <!-- Locker Edit Trigger Button -->
+                                    <a href="#useredit_<?php echo $user['user_id']; ?>" class="btn btn-success" data-toggle="modal" data-backdrop="false"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href='#userdelete_<?php echo $user['user_id']; ?>' class="btn btn-danger" data-toggle='modal' data-backdrop='false'><i class="fa fa-trash"></i> Delete</a>
+                                    </td>
+                                
+                                </tr>
+                            <?php include('../modal/modal.php'); ?>
+                            <?php } } } ?>
                     </tbody>
                 </table>
 

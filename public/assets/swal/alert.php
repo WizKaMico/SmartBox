@@ -70,6 +70,86 @@
                     </script>';
                 }
 
+            } else if($_GET['message'] == 'loginfail'){
+
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Please Enter email/password",
+                            text: "",
+                            confirmButtonText: "Close",
+                            iconColor:"#000000",
+                            confirmButtonColor: "#000000"
+                        });
+                    });
+                </script>';
+
+            } else if($_GET['message'] == 'failpass'){
+              
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Wrong Password!",
+                            text: "",
+                            confirmButtonText: "Close",
+                            iconColor:"#000000",
+                            confirmButtonColor: "#000000"
+                        });
+                    });
+                </script>';
+
+            } else if($_GET['message'] == 'creationSuccess'){
+              
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Account successfully created",
+                            text: "",
+                            confirmButtonText: "Close",
+                            iconColor:"#000000",
+                            confirmButtonColor: "#000000"
+                        });
+                    });
+                </script>';
+
+            } else if($_GET['message'] == 'creationFailed'){
+              
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Account creation failed",
+                            text: "",
+                            confirmButtonText: "Close",
+                            iconColor:"#000000",
+                            confirmButtonColor: "#000000"
+                        });
+                    });
+                </script>';
+
+            } else if($_GET['message'] == 'unverified'){
+              
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Email verified/not verified",
+                            text: "",
+                            confirmButtonText: "Close",
+                            iconColor:"#000000",
+                            confirmButtonColor: "#000000"
+                        });
+                    });
+                </script>';    
+
             } else if($_GET['message'] == 'logout'){
               
                 echo '
@@ -91,8 +171,6 @@
                                 });
                             });
                         </script>';
-
-
             } else {
                
                     echo '
