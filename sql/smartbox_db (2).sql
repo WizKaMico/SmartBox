@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 10, 2025 at 10:47 AM
+-- Generation Time: Mar 10, 2025 at 12:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -64,7 +64,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_CreateUserAccountUpdateCreden
 DECLARE isAccountExist INT DEFAULT 0;
 SELECT COUNT(*) INTO isAccountExist FROM smart_users SU WHERE SU.code = code;
 IF isAccountExist > 0 THEN
-UPDATE smart_users SET password = password, unhashed = unhashed WHERE code = code;
+UPDATE smart_users SU SET password = password, unhashed = unhashed WHERE SU.code = code;
 INSERT INTO smart_users_logs (user_id, image, firstname, lastname, contact, email, password, unhashed, code, status) SELECT user_id, image, firstname, lastname, contact, email, password, unhashed, code, status FROM smart_users WHERE code = code;
 SELECT SU.* FROM smart_users SU WHERE SU.code = code;
 END IF;
@@ -406,7 +406,8 @@ CREATE TABLE `smart_users` (
 --
 
 INSERT INTO `smart_users` (`user_id`, `image`, `firstname`, `lastname`, `contact`, `email`, `password`, `unhashed`, `code`, `status`, `date_created`) VALUES
-(1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-02-11');
+(1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-02-11'),
+(2, 'locker.PNG', 'Sherwin', 'Sherwin', '09531599179', 'revcoreitsolution@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9789, 'VERIFIED', '2025-02-11');
 
 -- --------------------------------------------------------
 
@@ -466,7 +467,11 @@ CREATE TABLE `smart_users_logs` (
 INSERT INTO `smart_users_logs` (`log_id`, `user_id`, `image`, `firstname`, `lastname`, `contact`, `email`, `password`, `unhashed`, `code`, `status`, `date_created`) VALUES
 (1, 1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'UNVERIFIED', '2025-02-11 14:16:09'),
 (2, 1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-02-11 14:16:23'),
-(3, 1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-02-11 14:17:12');
+(3, 1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-02-11 14:17:12'),
+(4, 1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '4eeda563b4805b3eb4b02254c0b18ec7', '@Light101213', 9688, 'VERIFIED', '2025-03-10 11:04:42'),
+(5, 2, 'locker.PNG', 'Sherwin', 'Sherwin', '09531599179', 'revcoreitsolution@gmail.com', '4eeda563b4805b3eb4b02254c0b18ec7', '@Light101213', 9688, 'VERIFIED', '2025-03-10 11:04:42'),
+(7, 1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-03-10 11:06:41'),
+(8, 2, 'locker.PNG', 'Sherwin', 'Sherwin', '09531599179', 'revcoreitsolution@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-03-10 11:06:41');
 
 --
 -- Indexes for dumped tables
@@ -559,7 +564,7 @@ ALTER TABLE `smart_reportpayment`
 -- AUTO_INCREMENT for table `smart_users`
 --
 ALTER TABLE `smart_users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `smart_users_history`
@@ -571,7 +576,7 @@ ALTER TABLE `smart_users_history`
 -- AUTO_INCREMENT for table `smart_users_logs`
 --
 ALTER TABLE `smart_users_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

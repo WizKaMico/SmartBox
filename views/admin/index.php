@@ -76,10 +76,13 @@ if(!empty($_GET['action']))
                         $result = $portCont->validateAccount($email);
                         if(!empty($result))
                         {
-                            $fullname = $result[0]['firstname'].' '.$result[0]['lastname'];
-                            $code = $result[0]['code'];
-                            require("../../public/assets/mail/accountForgotPassword.php");
-                            Header('Location:?view=FORGOT&message=success');
+                            if(!empty($result[0]['email']))
+                            {
+                                $fullname = $result[0]['firstname'].' '.$result[0]['lastname'];
+                                $code = $result[0]['code'];
+                                require("../../public/assets/mail/accountForgotPassword.php");
+                                Header('Location:?view=FORGOT&message=accountvalid');
+                            }
                         }
                     }
                     catch(Exception $e)
@@ -103,7 +106,7 @@ if(!empty($_GET['action']))
                             $result = $portCont->updateAccountCredentialPassword($code,$password,$hashed);
                             if(!empty($result))
                             {
-                                Header('Location:?view=HOME&message=success');
+                                Header('Location:?view=HOME&message=successchangepassword');
                                 exit;
                             }
                         }
@@ -190,15 +193,7 @@ if(!empty($_GET['action']))
                     include('./routes/forgot.php');
                     break;
                 case "FORGOTACCOUNT":
-                    $code = $_GET['code'];
-                    if(!empty($code))
-                    {
-                        include('./routes/forgot_account.php');
-                    }
-                    else
-                    {
-                        Header('Location:?view=HOME');
-                    }
+                     include('./routes/forgot_account.php');
                     break;
                 default: 
                     include('./routes/home.php');
