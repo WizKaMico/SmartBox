@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 10, 2025 at 09:33 AM
+-- Generation Time: Mar 10, 2025 at 10:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -129,9 +129,9 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockercredentialsSpecificView` (IN `account_id` INT(11), IN `pincode` INT(50))   BEGIN
 DECLARE isAccountExistent INT DEFAULT 0;
-SELECT COUNT(*) INTO isAccountExistent FROM smart_lockercredentials SLC WHERE SLC.account_id = account_id;
+SELECT COUNT(*) INTO isAccountExistent FROM smart_lockercredentials SLC WHERE SLC.account_id = account_id AND SLC.code = pincode;
 IF isAccountExistent > 0 THEN 
-UPDATE smart_lockercredentials SET status = 'VERIFIED' WHERE account_id = account_id AND pincode = pincode;
+UPDATE smart_lockercredentials SET status = 'VERIFIED' WHERE account_id = account_id AND code = pincode;
 SELECT SLC.* FROM smart_lockercredentials SLC WHERE SLC.account_id = account_id;
 END IF;
 END$$

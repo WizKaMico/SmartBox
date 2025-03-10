@@ -23,7 +23,18 @@ if(!empty($_GET['action']))
                             $result = $portCont->specificAccountLockerCredentials($account_id,$pin);
                             if(!empty($result))
                             {
-                                Header('Location:?view=HOME');
+                                if($result[0]['lockercred'] > 0)
+                                {
+                                    Header('Location:?view=HOME');
+                                }
+                                else
+                                {
+                                    Header('Location:?view=HOME&code='.$code.'&message=failed');
+                                }
+                            }
+                            else
+                            {
+                                Header('Location:?view=HOME&code='.$code.'&message=failed');
                             }
                         }
                     }
@@ -100,8 +111,8 @@ if(!empty($_GET['action']))
         ?>
     </style>
 </head>
-
 <body class="d-flex flex-column bg-dark vh-100">
+<?php include('../../public/assets/swal/alert.php'); ?>
 <?php 
         if(!empty($view))
         {
