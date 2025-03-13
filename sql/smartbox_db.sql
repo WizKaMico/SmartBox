@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 10, 2025 at 12:08 PM
+-- Generation Time: Mar 13, 2025 at 03:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -164,6 +164,10 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockerView` ()   BEGIN 
 SELECT SL.* FROM smart_locker SL;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockerViewStatus` (IN `id` INT(11))   BEGIN 
+SELECT SL.* FROM smart_locker SL WHERE SL.id = id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_profits` ()   BEGIN
@@ -576,7 +580,7 @@ ALTER TABLE `smart_users_history`
 -- AUTO_INCREMENT for table `smart_users_logs`
 --
 ALTER TABLE `smart_users_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
