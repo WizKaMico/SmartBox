@@ -19,6 +19,21 @@ class smartBox extends DBController
         $accountCredentials = $this->getDBResult($query, $params);
         return $accountCredentials;
     }
+
+    function accountPaymentDetailsView($code)
+    {
+        $query = "CALL smart_ReportPaymentView(?)";
+        
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+
+        $accountLockerResultPayment = $this->getDBResult($query, $params);
+        return $accountLockerResultPayment;
+    }
 }
 
 $portCont = new smartBox();

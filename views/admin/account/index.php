@@ -8,6 +8,73 @@ $account = $portCont->myAccountAdmin($user_id);
 $activeRent = $portCont->ActiveRentals();
 $activeProfit = $portCont->smart_profits();
 $activeRent = $portCont->smart_rents();
+
+if(!empty($_GET['action'])){
+    switch($_GET['action'])
+    {
+        case "ADDLOCKER":   
+            if(isset($_POST['create']))
+            {
+                $locker = $_POST['locker'];
+                $size = $_POST['size'];
+                $dimension = $_POST['dimension'];
+                $status = $_POST['status'];
+                $price = $_POST['price'];
+                if(!empty($locker) && !empty($size)  && !empty($dimension)  && !empty($status) && !empty($price))
+                {
+                    try
+                    {
+                        $portCont->addLocker($locker, $size, $dimension, $status, $price);
+                        Header('Location:?view=LOCKER&message=success');
+                    }
+                    catch(Exception $e)
+                    {
+                        Header('Location:?view=LOCKER&message=failed');
+                    }
+                }
+            }
+            break;
+        case "UPDATELOCKERPRICE":
+            if(isset($_POST['edit']))
+            {
+                    $id = $_POST['id'];
+                    $price = $_POST['price'];
+                    if(!empty($id) && !empty($price))
+                    {
+                        try
+                        {
+                            $portCont->updateLockerPrice($id, $price);
+                            Header('Location:?view=LOCKER&message=success');
+                        }
+                        catch(Exception $e)
+                        {   
+                            Header('Location:?view=LOCKER&message=failed');
+                        }
+                    }
+            }
+            break;
+        case "DELETELOCKER":
+            if(isset($_POST['delete']))
+            {
+                $id = $_POST['id'];
+                if(!empty($id))
+                {
+                    try
+                    {
+                        $portCont->deleteLocker($id);
+                        Header('Location:?view=LOCKER&message=success');
+                    }
+                    catch(Exception $e)
+                    {   
+                        Header('Location:?view=LOCKER&message=failed');
+                    }
+                }
+            }
+            break;
+    }
+}
+
+
 ?>
 
 
@@ -60,6 +127,9 @@ $activeRent = $portCont->smart_rents();
 
         <a href="?view=HOME" class="d-flex align-items-center text-white text-decoration-none hover-bg-light rounded mb-2 px-5 py-3 w-100">
             <i class="bi bi-house-door me-2"></i>Dashboard
+        </a>
+        <a href="?view=TRANSRECORDS" class="d-flex align-items-center text-white text-decoration-none hover-bg-light rounded mb-2 px-5 py-3 w-100">
+            <i class="bi bi-building"></i> Transaction
         </a>
         <a href="?view=LOCKER" class="d-flex align-items-center text-white text-decoration-none hover-bg-light rounded mb-2 px-5 py-3 w-100">
             <i class="bi bi-lock me-2"></i>Lockers
@@ -118,6 +188,9 @@ $activeRent = $portCont->smart_rents();
                 case "HISTORY":
                     include('../routes/account/history.php');
                     break;
+                case "TRANSRECORDS": 
+                    include('../routes/account/transaction_records.php');
+                    break;
                 default: 
                     include('./routes/account/home.php');
                     break;
@@ -163,6 +236,9 @@ $activeRent = $portCont->smart_rents();
                 case 'ADMIN':
                     loadScript('../../../public/assets/datatable/dt.js');    
                     loadScript('../js/modal.js');   
+                    break;
+                case 'TRANSRECORDS':
+                    loadScript('../../../public/assets/datatable/dt.js');    
                     break;
                 case 'HISTORY':
                     loadScript('../../../public/assets/datatable/dt.js');    

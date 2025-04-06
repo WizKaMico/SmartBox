@@ -2,5 +2,10 @@
     "require": {
         "guzzlehttp/guzzle": "^7.9",
         "endroid/qr-code": "^6.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0.30"
+        }
     }
 }

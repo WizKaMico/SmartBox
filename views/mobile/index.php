@@ -55,23 +55,31 @@ if(!empty($_GET['action']))
                         {
                             $account = $portCont->specificAccountLogin($pin);
                             $_SESSION['account_id'] = $account[0]["account_id"];
-                            if($account[0]['session'] != 'EXPIRE')
+                            if($account[0]["account_id"] > 0)
                             {
-                                if($account[0]['terms'] == NULL || $account[0]['terms'] == 'un-signed')
+                                if($account[0]['session'] != 'EXPIRE')
                                 {
-                                    header('Location: ./account/?view=TERMS');
-                                    exit; 
+                                    if($account[0]['terms'] == NULL || $account[0]['terms'] == 'un-signed')
+                                    {
+                                        header('Location: ./account/?view=TERMS');
+                                        exit; 
+                                    }
+                                    else
+                                    {
+                                        header('Location: ./account/?view=HOME');
+                                        exit; 
+                                    }
                                 }
                                 else
                                 {
-                                    header('Location: ./account/?view=HOME');
-                                    exit; 
+                                   header('Location: ./account/?view=EXPIRE');
                                 }
                             }
                             else
                             {
-                               header('Location: ./account/?view=EXPIRE');
+                                Header('Location:?view=HOME&message=failed');
                             }
+
                         }
                         catch(Exception $e)
                         {

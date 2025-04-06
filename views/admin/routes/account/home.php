@@ -39,19 +39,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            
                                 <?php 
                                     $lockers = $portCont->lockers();
                                     if (!empty($lockers)) {
                                     foreach ($lockers as $key => $locker) {
                                 ?>
+                                <tr>
                                     <td><?php echo $locker['locker']; ?></td>
                                     <td><?php echo $locker['size']; ?></td>
                                     <td><?php echo $locker['dimension']; ?></td>
                                     <td><?php echo $locker['status']; ?></td>
-                               
+                                </tr>
                                 <?php } } ?>
-                            </tr>
                             </tbody>
                         </table>
                     </div>

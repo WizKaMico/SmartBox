@@ -28,7 +28,7 @@
                             <td><?php echo $lockers['locker']; ?></td>
                             <td><?php echo $lockers['size']; ?></td>
                             <td><?php echo $lockers['dimension']; ?></td>
-                            <td><?php echo $lockers['price']; ?></td>
+                            <td>₱ <?php echo $lockers['price']; ?></td>
                             <td><?php echo $lockers['status']; ?></td>
                             <td>
                                <!-- Locker Edit Trigger Button -->

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2025 at 03:40 PM
+-- Generation Time: Apr 06, 2025 at 10:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -80,6 +80,10 @@ SELECT SU.* FROM smart_users SU WHERE SU.code = code;
 END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_CreatingLocker` (IN `locker` VARCHAR(50), IN `size` VARCHAR(50), IN `dimension` VARCHAR(50), IN `status` VARCHAR(50), IN `price` DOUBLE(5,2))   BEGIN           
+INSERT INTO smart_locker (locker,size,dimension,price,status) VALUES (locker,size,dimension,price,status);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_LockerAccountLockerUpdate` (IN `account_id` INT(11), IN `lockerStatus` VARCHAR(50))   BEGIN
 INSERT INTO smart_lockercredentials_logs (accountid,activity) VALUES (account_id,lockerStatus);
 UPDATE smart_lockercredentials SLC SET SLC.lockerStatus = lockerStatus WHERE SLC.account_id = account_id;
@@ -144,6 +148,14 @@ UPDATE smart_lockercredentials SLC SET SLC.terms = terms WHERE SLC.account_id = 
 END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_LockerDelete` (IN `locker_id` INT(11))   BEGIN
+DECLARE isAccountExisting INT DEFAULT 0;
+SELECT COUNT(*) INTO isAccountExisting FROM smart_locker SL WHERE SL.id = id;
+IF isAccountExisting > 0 THEN
+  DELETE FROM smart_locker WHERE id = locker_id;
+END IF;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockerServiceExpire` (IN `account_id` INT(11), IN `locker_id` INT(11))   BEGIN
 UPDATE smart_locker sl SET sl.status = 'AVAILABLE' WHERE sl.id = locker_id;
 UPDATE smart_report sr SET sr.session = 'EXPIRE' WHERE sr.account_id = account_id;
@@ -159,6 +171,15 @@ SELECT SL.* FROM smart_locker SL WHERE SL.id = id;
 ELSE
 SIGNAL SQLSTATE '45000'
 SET MESSAGE_TEXT = 'There is no locker in that id';
+END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockerUpdate` (IN `price` DOUBLE(5,2), IN `id` INT(11))   BEGIN
+DECLARE isLockerExisting INT DEFAULT 0;
+SELECT COUNT(*) INTO isLockerExisting FROM smart_locker SL WHERE SL.id = id; 
+IF isLockerExisting > 0 THEN
+UPDATE smart_locker SL SET SL.price = price WHERE SL.id = id AND 1 = 1;
+SELECT * FROM smart_locker SL WHERE SL.id = id;
 END IF;
 END$$
 
@@ -196,6 +217,12 @@ SELECT SRP.* FROM smart_reportpayment SRP WHERE SRP.code= code;
 ELSE 
 SELECT SRP.* FROM smart_reportpayment SRP WHERE SRP.code= code;
 END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_ReportPaymentTransaction` ()   BEGIN
+SELECT SR.name as name, SR.email as email, SR.phone as phone, SL.locker as locker, SR.price as price, SRP.src_link as reference, SRP.created_date as date_created, SR.session as session FROM smart_report SR
+LEFT JOIN smart_reportpayment SRP ON SR.account_id = SRP.account_id
+LEFT JOIN smart_locker SL ON SL.id = SR.locker_id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_ReportPaymentView` (IN `code` INT(11))   BEGIN 
@@ -272,8 +299,9 @@ CREATE TABLE `smart_locker` (
 --
 
 INSERT INTO `smart_locker` (`id`, `locker`, `size`, `dimension`, `price`, `status`, `access`, `date_created`) VALUES
-(1, '001', 'Medium', '136mm x 125mm', 120.00, 'Occupied', 'Unlock', '2025-02-08'),
-(2, '002', 'Medium', '136mm x 125mm', 120.00, 'Available', 'Unlock', '2025-03-10');
+(1, '001', 'Medium', '136mm x 125mm', 550.00, 'AVAILABLE', 'Unlock', '2025-02-08'),
+(2, '002', 'Medium', '136mm x 125mm', 459.00, 'Available', 'Unlock', '2025-03-10'),
+(6, '003', 'Small', '136mm x 125mm', 550.00, 'Occupied', NULL, '2025-04-06');
 
 -- --------------------------------------------------------
 
@@ -297,7 +325,8 @@ CREATE TABLE `smart_lockercredentials` (
 --
 
 INSERT INTO `smart_lockercredentials` (`lockercred`, `account_id`, `pincode`, `code`, `status`, `lockerStatus`, `terms`, `date_created`) VALUES
-(1, 1, 123456, 8077, 'VERIFIED', 'unlocked', 'signed', '2025-02-11');
+(1, 1, 123456, 8077, 'VERIFIED', 'unlocked', 'signed', '2025-02-11'),
+(2, 3, 121212, 8378, 'VERIFIED', 'locked', 'signed', '2025-04-06');
 
 -- --------------------------------------------------------
 
@@ -332,7 +361,40 @@ INSERT INTO `smart_lockercredentials_logs` (`logid`, `accountid`, `activity`, `l
 (13, 1, 'sign-in', '2025-02-11 14:15:06'),
 (14, 1, 'sign-in', '2025-02-11 14:15:19'),
 (15, 1, 'sign-in', '2025-02-11 14:15:26'),
-(16, 1, 'sign-in', '2025-02-11 14:15:28');
+(16, 1, 'sign-in', '2025-02-11 14:15:28'),
+(17, 3, 'sign-in', '2025-04-06 08:03:20'),
+(18, 3, 'sign-in', '2025-04-06 08:06:48'),
+(19, 3, 'sign-in', '2025-04-06 08:06:51'),
+(20, 3, 'sign-in', '2025-04-06 08:06:51'),
+(21, 3, 'sign-in', '2025-04-06 08:06:59'),
+(22, 3, 'locked', '2025-04-06 08:06:59'),
+(23, 3, 'sign-in', '2025-04-06 08:07:03'),
+(24, 3, 'unlocked', '2025-04-06 08:07:03'),
+(25, 3, 'sign-in', '2025-04-06 08:07:05'),
+(26, 3, 'sign-in', '2025-04-06 08:07:08'),
+(27, 3, 'locked', '2025-04-06 08:07:08'),
+(28, 3, 'sign-in', '2025-04-06 08:07:11'),
+(29, 3, 'sign-in', '2025-04-06 08:07:13'),
+(30, 3, 'unlocked', '2025-04-06 08:07:13'),
+(31, 3, 'sign-in', '2025-04-06 08:07:17'),
+(32, 3, 'sign-in', '2025-04-06 08:07:19'),
+(33, 3, 'sign-in', '2025-04-06 08:07:22'),
+(34, 3, 'sign-in', '2025-04-06 08:07:27'),
+(35, 3, 'locked', '2025-04-06 08:07:27'),
+(36, 3, 'sign-in', '2025-04-06 08:07:30'),
+(37, 3, 'unlocked', '2025-04-06 08:07:30'),
+(38, 3, 'sign-in', '2025-04-06 08:07:33'),
+(39, 3, 'sign-in', '2025-04-06 08:07:35'),
+(40, 3, 'locked', '2025-04-06 08:07:35'),
+(41, 3, 'sign-in', '2025-04-06 08:07:38'),
+(42, 3, 'sign-in', '2025-04-06 08:07:42'),
+(43, 3, 'sign-in', '2025-04-06 08:07:44'),
+(44, 3, 'sign-in', '2025-04-06 08:07:48'),
+(45, 3, 'sign-in', '2025-04-06 08:07:55'),
+(46, 3, 'sign-in', '2025-04-06 08:07:58'),
+(47, 3, 'sign-in', '2025-04-06 08:10:29'),
+(48, 3, 'sign-in', '2025-04-06 08:10:32'),
+(49, 3, 'sign-in', '2025-04-06 08:10:46');
 
 -- --------------------------------------------------------
 
@@ -360,7 +422,9 @@ CREATE TABLE `smart_report` (
 --
 
 INSERT INTO `smart_report` (`account_id`, `locker_id`, `name`, `phone`, `email`, `hours`, `price`, `payment`, `code`, `validationStatus`, `session`, `date_created`) VALUES
-(1, 1, 'Sherwin', '09171439388', 'gmfacistol@outlook.com', 5, 600.00, 'GCash', 6749, 'VERIFIED', 'VALID', '2025-02-11');
+(1, 1, 'Sherwin', '09171439388', 'gmfacistol@outlook.com', 5, 600.00, 'GCash', 6749, 'VERIFIED', 'EXPIRE', '2025-02-11'),
+(2, 2, 'Gerald Mico Facistol', '09171439388', 'gmfacistol@outlook.com', 24, 999.99, 'GCash', 9015, 'VERIFIED', 'VALID', '2025-04-06'),
+(3, 6, 'Gerald Mico Facistol', '09171439388', 'gmfacistol@outlook.com', 24, 999.99, 'GCash', 9437, 'VERIFIED', 'VALID', '2025-04-06');
 
 -- --------------------------------------------------------
 
@@ -383,7 +447,9 @@ CREATE TABLE `smart_reportpayment` (
 --
 
 INSERT INTO `smart_reportpayment` (`payid`, `account_id`, `code`, `src_id`, `src_link`, `status`, `created_date`) VALUES
-(1, 1, 6749, 'https://test-sources.paymongo.com/sources?id=src_c', 'src_cZZfZ9T2PBdiwZYUdx7bqgvS', 'SUCCESS', '2025-02-11');
+(1, 1, 6749, 'https://test-sources.paymongo.com/sources?id=src_c', 'src_cZZfZ9T2PBdiwZYUdx7bqgvS', 'SUCCESS', '2025-02-11'),
+(2, 2, 9015, 'https://test-sources.paymongo.com/sources?id=src_F', 'src_FQ7RNgYRmPND2CycCpdPm7PW', 'IN-PROGRESS', '2025-04-06'),
+(3, 3, 9437, 'https://test-sources.paymongo.com/sources?id=src_B', 'src_BBV3V6CcHbT9zCmx7dVetWv9', 'SUCCESS', '2025-04-06');
 
 -- --------------------------------------------------------
 
@@ -441,7 +507,11 @@ INSERT INTO `smart_users_history` (`sid`, `user_id`, `activity`, `date_created`)
 (8, 1, 'LOGGED IN', '2025-03-10'),
 (9, 1, 'LOGGED IN', '2025-03-10'),
 (10, 1, 'LOGGED IN', '2025-03-10'),
-(11, 1, 'LOGGED IN', '2025-03-10');
+(11, 1, 'LOGGED IN', '2025-03-10'),
+(12, 1, 'LOGGED IN', '2025-04-06'),
+(13, 1, 'LOGGED IN', '2025-04-06'),
+(14, 1, 'LOGGED IN', '2025-04-06'),
+(15, 1, 'LOGGED IN', '2025-04-06');
 
 -- --------------------------------------------------------
 
@@ -538,31 +608,31 @@ ALTER TABLE `smart_users_logs`
 -- AUTO_INCREMENT for table `smart_locker`
 --
 ALTER TABLE `smart_locker`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `smart_lockercredentials`
 --
 ALTER TABLE `smart_lockercredentials`
-  MODIFY `lockercred` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `lockercred` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `smart_lockercredentials_logs`
 --
 ALTER TABLE `smart_lockercredentials_logs`
-  MODIFY `logid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `logid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `smart_report`
 --
 ALTER TABLE `smart_report`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `smart_reportpayment`
 --
 ALTER TABLE `smart_reportpayment`
-  MODIFY `payid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `payid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `smart_users`
@@ -574,7 +644,7 @@ ALTER TABLE `smart_users`
 -- AUTO_INCREMENT for table `smart_users_history`
 --
 ALTER TABLE `smart_users_history`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `smart_users_logs`
