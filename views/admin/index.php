@@ -132,14 +132,29 @@ if(!empty($_GET['action']))
                             {
                                 if($account[0]["user_id"] > 0)
                                 {
-                                    if($account[0]["status"] == 'VERIFIED')
+                                    if($account[0]["role_name"] == "ADMIN")
                                     {
-                                        $_SESSION['user_id'] = $account[0]["user_id"];
-                                        header('Location: ./account/?view=HOME');
+                                        if($account[0]["status"] == 'VERIFIED')
+                                        {
+                                            $_SESSION['user_id'] = $account[0]["user_id"];
+                                            header('Location: ./account/?view=HOME');
+                                        }
+                                        else
+                                        {
+                                            Header('Location:?view=HOME&message=unverified');
+                                        }
                                     }
                                     else
                                     {
-                                        Header('Location:?view=HOME&message=unverified');
+                                        if($account[0]["status"] == 'VERIFIED' && $account[0]["staff_status"] == 'ACTIVE')
+                                        {
+                                            $_SESSION['user_id'] = $account[0]["user_id"];
+                                            header('Location: ./account/?view=HOME');
+                                        }
+                                        else
+                                        {
+                                            Header('Location:?view=HOME&message=unverified');
+                                        }
                                     }
                                 }
                                 else

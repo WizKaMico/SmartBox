@@ -12,32 +12,35 @@
                             <th>Profile</th>
                             <th>Fullname</th>
                             <th>Contact</th>
+                            <th>Role</th>
                             <th>Status</th>
                             <th>Manage</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php 
-                          $user = $portCont->smart_users();
+                          $user = $portCont->smart_users_staff();
                             if (!empty($user)) {
                               foreach ($user as $key => $user) {
-                                if($account[0]['user_id'] == $user['user_id']){
                         ?>
                                 <tr>
                                     <td><?php echo $user['user_id']; ?></td>
                                     <td><?php echo $user['image']; ?></td>
                                     <td><?php echo $user['firstname']; ?> <?php echo $user['lastname']; ?></td>
                                     <td><?php echo $user['contact']; ?></td>
+                                    <td><?php echo $user['role_name']; ?></td>
                                     <td><?php echo $user['status']; ?></td>
                                     <td>
                                     <!-- Locker Edit Trigger Button -->
-                                    <a href="#adminuseredit_<?php echo $user['user_id']; ?>" class="btn btn-success" data-toggle="modal" data-backdrop="false"><i class="fa fa-edit"></i> Edit</a>
-                                    <a href="#adminuserimage_<?php echo $user['user_id']; ?>" class="btn btn-success" data-toggle="modal" data-backdrop="false"><i class="fa fa-id-badge"></i> Image</a>
-                                    </td>
+                                    <a href="#staffuseredit_<?php echo $user['user_id']; ?>" class="btn btn-success" data-toggle="modal" data-backdrop="false"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href="#staffuserimage_<?php echo $user['user_id']; ?>" class="btn btn-success" data-toggle="modal" data-backdrop="false"><i class="fa fa-id-badge"></i> Image</a>
+                                    <a href='#staffuserStatus_<?php echo $user['user_id']; ?>' class="btn btn-warning" data-toggle='modal' data-backdrop='false'><i class="fa fa-key"></i> Edit Status</a>
+                                    <a href='#staffuserDelete_<?php echo $user['user_id']; ?>' class="btn btn-danger" data-toggle='modal' data-backdrop='false'><i class="fa fa-trash"></i> Delete Staff</a>
+                                </td>
                                 
                                 </tr>
                             <?php include('../modal/modal.php'); ?>
-                            <?php } } } ?>
+                            <?php } }  ?>
                     </tbody>
                 </table>
 

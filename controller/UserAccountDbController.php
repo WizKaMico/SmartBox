@@ -73,6 +73,13 @@ class smartBox extends DBController
         return $activeUser;
     }
 
+    function smart_users_staff()
+    {
+        $query = "CALL smart_usersStaffAdmin";
+        $activeUser = $this->getDBResult($query);
+        return $activeUser;
+    }
+
     function smart_checkLogs() 
     {
         $query = "CALL smart_checkLogs";
@@ -145,6 +152,25 @@ class smartBox extends DBController
         return $accountHistoryCredentials;
     }
 
+    function updateLockerStatus($id, $status)
+    {
+        $query = "CALL smart_lockerUpdateStatus(?,?)";
+        
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $status
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $id
+            )
+        );
+        
+        $accountHistoryCredentials = $this->getDBResult($query, $params);
+        return $accountHistoryCredentials;
+    }
+
     function deleteLocker($id)
     {
         $query = "CALL smart_LockerDelete(?)";
@@ -159,6 +185,101 @@ class smartBox extends DBController
         $accountHistoryCredentials = $this->getDBResult($query, $params);
         return $accountHistoryCredentials;
     }
+
+
+    function updateAdminInformation($user_id, $firstname, $lastname, $contact, $email, $password)
+    {
+        $query = "CALL smart_userAdmin_update(?,?,?,?,?,?,?)";
+           
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $user_id
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $firstname
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $lastname
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $contact
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $email
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => md5($password)
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $password
+            )
+        );
+        
+        $accountCredentials = $this->getDBResult($query, $params);
+        return $accountCredentials;
+    }
+
+    function update_AccountImage($imageName, $user_id)
+    {
+        $query = "CALL smart_userAdmin_update_image(?,?)";
+           
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $imageName
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $user_id
+            )
+        );
+        
+        $accountCredentials = $this->getDBResult($query, $params);
+        return $accountCredentials;
+    }
+
+    function updateAdminInformationStatus($user_id, $staff_status)
+    {
+        $query = "CALL smart_userAdmin_update_status(?,?)";
+           
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $staff_status
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $user_id
+            )
+        );
+        
+        $accountCredentials = $this->getDBResult($query, $params);
+        return $accountCredentials;
+    }
+
+    function deleteStaffInformation($user_id)
+    {
+        $query = "CALL smart_userStaff_delete(?)";
+           
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $user_id
+            )
+        );
+        
+        $accountCredentials = $this->getDBResult($query, $params);
+        return $accountCredentials;
+    }
+
+
 
      //GRAPH
      function smart_reportViewGraph()

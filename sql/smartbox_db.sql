@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2025 at 10:13 AM
+-- Generation Time: Apr 09, 2025 at 04:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -53,7 +53,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_CreateUserAccount` (IN `image
 DECLARE isAccountExisting INT DEFAULT 0; 
 SELECT COUNT(*) INTO isAccountExisting FROM smart_users SU WHERE SU.email = email; 
 IF isAccountExisting = 0 THEN 
-INSERT INTO smart_users (image,firstname,lastname,contact,email,password,unhashed,code) VALUES (image,firstname,lastname,contact,email,password,unhashed,code); 
+INSERT INTO smart_users (image,firstname,lastname,contact,email,password,unhashed,code,role) VALUES (image,firstname,lastname,contact,email,password,unhashed,code,2); 
 INSERT INTO smart_users_logs (user_id, image, firstname, lastname, contact, email, password, unhashed, code, status)
 SELECT user_id, image, firstname, lastname, contact, email, password, unhashed, code, status FROM smart_users WHERE email = email;
 SELECT SU.* FROM smart_users SU WHERE SU.email = email;
@@ -95,7 +95,7 @@ SELECT SR.account_id as account_id,SR.locker_id as lock_id,SR.phone as phone,SR.
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_LockerAccountSessionAdmin` (IN `user_id` INT(11))   BEGIN
-SELECT SU.* FROM smart_users SU WHERE SU.user_id = user_id;
+SELECT SU.*,SUR.role_name FROM smart_users SU LEFT JOIN smart_users_role SUR ON SU.role = SUR.role_id WHERE SU.user_id = user_id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockerAccountSpecificView` (IN `code` INT(11))   BEGIN
@@ -183,6 +183,10 @@ SELECT * FROM smart_locker SL WHERE SL.id = id;
 END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockerUpdateStatus` (IN `statusx` VARCHAR(50), IN `idx` INT(11))   BEGIN 
+UPDATE smart_locker SET status = statusx WHERE id = idx;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_lockerView` ()   BEGIN 
 SELECT SL.* FROM smart_locker SL;
 END$$
@@ -259,12 +263,54 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_UserAccountAdminLogin` (IN `e
         SELECT user_id, 'LOGGED IN' 
         FROM smart_users SU 
         WHERE SU.email = email AND SU.password = password;
-        SELECT SU.user_id, SU.email, SU.firstname, SU.lastname, SU.contact, SU.status
+        SELECT SU.user_id, SU.email, SU.firstname, SU.lastname, SU.contact, SU.status, SUR.role_name
         FROM smart_users SU
+        LEFT JOIN smart_users_role SUR ON SU.role = SUR.role_id
         WHERE SU.email = email AND SU.password = password;
     ELSE
         SELECT 'Account does not exist or invalid credentials' AS message;
     END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_userAdmin_update` (IN `user_idx` INT, IN `firstnamex` VARCHAR(50), IN `lastnamex` VARCHAR(50), IN `contactx` VARCHAR(50), IN `emailx` VARCHAR(50), IN `passwordx` VARCHAR(255), IN `unhashedx` VARCHAR(50))   BEGIN
+    DECLARE userExistence INT DEFAULT 0; 
+
+    SELECT COUNT(*) INTO userExistence 
+    FROM smart_users 
+    WHERE user_id = user_idx;
+
+    IF userExistence > 0 THEN
+        UPDATE smart_users 
+        SET firstname = firstnamex, 
+            lastname = lastnamex, 
+            contact = contactx, 
+            email = emailx, 
+            password = passwordx, 
+            unhashed = unhashedx 
+        WHERE user_id = user_idx;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_userAdmin_update_image` (IN `imagex` VARCHAR(255), IN `user_idx` INT)   BEGIN
+    DECLARE userExistence INT DEFAULT 0; 
+
+    SELECT COUNT(*) INTO userExistence 
+    FROM smart_users 
+    WHERE user_id = user_idx;
+
+    IF userExistence > 0 THEN
+        UPDATE smart_users  
+        SET image = imagex 
+        WHERE user_id = user_idx;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_userAdmin_update_status` (IN `staff_statusx` VARCHAR(255), IN `user_idx` INT(11))   BEGIN
+DECLARE userExistence INT DEFAULT 0; 
+SELECT COUNT(*) INTO userExistence FROM smart_users SU WHERE SU.user_id = user_idx;
+IF userExistence > 0 THEN
+UPDATE smart_users SET staff_status = staff_statusx WHERE user_id = user_idx;
+END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_usersAdmin` ()   BEGIN 
@@ -273,6 +319,18 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_usershistory` (IN `user_id` INT(11))   BEGIN 
 SELECT SUH.* FROM smart_users_history SUH WHERE SUH.user_id = user_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_usersStaffAdmin` ()   BEGIN 
+SELECT SU.*,SUR.role_name FROM smart_users SU LEFT JOIN smart_users_role SUR ON SU.role = SUR.role_id WHERE SU.role = 2;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_userStaff_delete` (IN `user_idx` INT)   BEGIN
+DECLARE userExistence INT DEFAULT 0;
+SELECT COUNT(*) INTO userExistence FROM smart_users SU WHERE SU.user_id = user_idx;
+IF userExistence > 0 THEN
+DELETE FROM smart_users WHERE user_id = user_idx;
+END IF;
 END$$
 
 DELIMITER ;
@@ -300,8 +358,8 @@ CREATE TABLE `smart_locker` (
 
 INSERT INTO `smart_locker` (`id`, `locker`, `size`, `dimension`, `price`, `status`, `access`, `date_created`) VALUES
 (1, '001', 'Medium', '136mm x 125mm', 550.00, 'AVAILABLE', 'Unlock', '2025-02-08'),
-(2, '002', 'Medium', '136mm x 125mm', 459.00, 'Available', 'Unlock', '2025-03-10'),
-(6, '003', 'Small', '136mm x 125mm', 550.00, 'Occupied', NULL, '2025-04-06');
+(2, '002', 'Medium', '136mm x 125mm', 459.00, 'AVAILABLE', 'Unlock', '2025-03-10'),
+(6, '003', 'Small', '136mm x 125mm', 550.00, 'OCCUPIED', NULL, '2025-04-06');
 
 -- --------------------------------------------------------
 
@@ -468,6 +526,8 @@ CREATE TABLE `smart_users` (
   `unhashed` varchar(50) NOT NULL,
   `code` int(11) NOT NULL,
   `status` varchar(50) DEFAULT 'UNVERIFIED',
+  `role` int(11) NOT NULL,
+  `staff_status` varchar(50) NOT NULL,
   `date_created` date DEFAULT curdate()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -475,9 +535,9 @@ CREATE TABLE `smart_users` (
 -- Dumping data for table `smart_users`
 --
 
-INSERT INTO `smart_users` (`user_id`, `image`, `firstname`, `lastname`, `contact`, `email`, `password`, `unhashed`, `code`, `status`, `date_created`) VALUES
-(1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-02-11'),
-(2, 'locker.PNG', 'Sherwin', 'Sherwin', '09531599179', 'revcoreitsolution@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9789, 'VERIFIED', '2025-02-11');
+INSERT INTO `smart_users` (`user_id`, `image`, `firstname`, `lastname`, `contact`, `email`, `password`, `unhashed`, `code`, `status`, `role`, `staff_status`, `date_created`) VALUES
+(1, 'validid.jpg', 'Sherwin Admin', 'Shey', '0916653189', 'gmfacistol@outlook.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 9688, 'VERIFIED', 1, '', '2025-02-11'),
+(2, 'chestlevel.jpg', 'Sherwin', 'Staff', '09531599179', 'revcoreitsolution@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 'test', 9789, 'VERIFIED', 2, 'ACTIVE', '2025-02-11');
 
 -- --------------------------------------------------------
 
@@ -511,7 +571,8 @@ INSERT INTO `smart_users_history` (`sid`, `user_id`, `activity`, `date_created`)
 (12, 1, 'LOGGED IN', '2025-04-06'),
 (13, 1, 'LOGGED IN', '2025-04-06'),
 (14, 1, 'LOGGED IN', '2025-04-06'),
-(15, 1, 'LOGGED IN', '2025-04-06');
+(15, 1, 'LOGGED IN', '2025-04-06'),
+(16, 1, 'LOGGED IN', '2025-04-09');
 
 -- --------------------------------------------------------
 
@@ -546,6 +607,26 @@ INSERT INTO `smart_users_logs` (`log_id`, `user_id`, `image`, `firstname`, `last
 (5, 2, 'locker.PNG', 'Sherwin', 'Sherwin', '09531599179', 'revcoreitsolution@gmail.com', '4eeda563b4805b3eb4b02254c0b18ec7', '@Light101213', 9688, 'VERIFIED', '2025-03-10 11:04:42'),
 (7, 1, 'locker.PNG', 'Sherwin', 'Sherwin', '0916653189', 'gmfacistol@outlook.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-03-10 11:06:41'),
 (8, 2, 'locker.PNG', 'Sherwin', 'Sherwin', '09531599179', 'revcoreitsolution@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9688, 'VERIFIED', '2025-03-10 11:06:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `smart_users_role`
+--
+
+CREATE TABLE `smart_users_role` (
+  `role_id` int(11) NOT NULL,
+  `role_name` varchar(50) NOT NULL,
+  `date_created` date DEFAULT curdate()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `smart_users_role`
+--
+
+INSERT INTO `smart_users_role` (`role_id`, `role_name`, `date_created`) VALUES
+(1, 'ADMIN', '2025-04-09'),
+(2, 'STAFF', '2025-04-09');
 
 --
 -- Indexes for dumped tables
@@ -601,6 +682,12 @@ ALTER TABLE `smart_users_logs`
   ADD PRIMARY KEY (`log_id`);
 
 --
+-- Indexes for table `smart_users_role`
+--
+ALTER TABLE `smart_users_role`
+  ADD PRIMARY KEY (`role_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -644,13 +731,19 @@ ALTER TABLE `smart_users`
 -- AUTO_INCREMENT for table `smart_users_history`
 --
 ALTER TABLE `smart_users_history`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `smart_users_logs`
 --
 ALTER TABLE `smart_users_logs`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `smart_users_role`
+--
+ALTER TABLE `smart_users_role`
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

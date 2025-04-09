@@ -24,7 +24,8 @@ if(!empty($_GET['action']))
                     if(!empty($lockerResult))
                     { 
                         $amount = $lockerResult[0]['price'];
-                        $price = $hours * $amount;
+                        // $price = $hours * $amount;
+                        $price = $amount;
                         $code = rand(6666,9999);
                         $to = preg_replace('/^0/', '+63', $phone);
                         $message = "SmartBox 4-Digit Code Confirmation ${name} - ${code}";

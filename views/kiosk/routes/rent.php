@@ -29,13 +29,13 @@ $total =  $lockerResult[0]['price'] * 24;
                     <input type="tel" name="phone" class="form-control fs-4" id="phone" placeholder="Account Phone" required inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 </div>
 
-                <div class="d-flex justify-content-between mb-2 w-100">
+                <!-- <div class="d-flex justify-content-between mb-2 w-100">
                     <div class="fw-bold" id="sizeDisplay"><?php echo $lockerResult[0]['size']; ?></div>
                     <div class="fw-bold">₱ <?php echo $total; ?></div>
-                </div>
+                </div> -->
 
                 <div class="d-flex justify-content-between mb-2 w-100">
-                    <div class="fw-bold" id="sizeDisplay">Hourly Rate</div>
+                    <div class="fw-bold" id="sizeDisplay">Price</div>
                     <div class="fw-bold">₱ <?php echo $lockerResult[0]['price'];  ?></div>
                 </div>
 

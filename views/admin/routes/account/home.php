@@ -55,33 +55,6 @@
                             </tbody>
                         </table>
                     </div>
-
-
-                    <div class="d-flex justify-content-center w-50">
-                        <div>
-                            <div class="mb-2">
-                                <div>Available</div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="legend-dot bg-success"></div>
-                                    <span class="fs-4 fw-bold"></span>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <div>Unavailable</div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="legend-dot bg-secondary"></div>
-                                    <span class="fs-4 fw-bold"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <div>Occupied</div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="legend-dot bg-danger"></div>
-                                    <span class="fs-4 fw-bold"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

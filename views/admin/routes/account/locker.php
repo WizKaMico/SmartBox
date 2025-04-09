@@ -33,7 +33,8 @@
                             <td>
                                <!-- Locker Edit Trigger Button -->
                                <a href="#lockeredit_<?php echo $lockers['id']; ?>" class="btn btn-success" data-toggle="modal" data-backdrop="false"><i class="fa fa-edit"></i> Edit</a>
-                                <a  href='#lockerdelete_<?php echo $lockers['id']; ?>' class="btn btn-danger" data-toggle='modal' data-backdrop='false'><i class="fa fa-trash"></i> Delete</a>
+                               <a href='#lockerstatus_<?php echo $lockers['id']; ?>' class="btn btn-warning" data-toggle='modal' data-backdrop='false'><i class="fa fa-key"></i> Status</a>
+                               <a href='#lockerdelete_<?php echo $lockers['id']; ?>' class="btn btn-danger" data-toggle='modal' data-backdrop='false'><i class="fa fa-trash"></i> Delete</a>
                             </td>
                         
                         </tr>
