@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2025 at 04:35 PM
+-- Generation Time: Apr 10, 2025 at 04:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -263,7 +263,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `smart_UserAccountAdminLogin` (IN `e
         SELECT user_id, 'LOGGED IN' 
         FROM smart_users SU 
         WHERE SU.email = email AND SU.password = password;
-        SELECT SU.user_id, SU.email, SU.firstname, SU.lastname, SU.contact, SU.status, SUR.role_name
+        SELECT SU.user_id, SU.email, SU.firstname, SU.lastname, SU.contact, SU.status, SUR.role_name, SU.staff_status
         FROM smart_users SU
         LEFT JOIN smart_users_role SUR ON SU.role = SUR.role_id
         WHERE SU.email = email AND SU.password = password;
@@ -572,7 +572,9 @@ INSERT INTO `smart_users_history` (`sid`, `user_id`, `activity`, `date_created`)
 (13, 1, 'LOGGED IN', '2025-04-06'),
 (14, 1, 'LOGGED IN', '2025-04-06'),
 (15, 1, 'LOGGED IN', '2025-04-06'),
-(16, 1, 'LOGGED IN', '2025-04-09');
+(16, 1, 'LOGGED IN', '2025-04-09'),
+(17, 2, 'LOGGED IN', '2025-04-10'),
+(18, 2, 'LOGGED IN', '2025-04-10');
 
 -- --------------------------------------------------------
 
@@ -731,7 +733,7 @@ ALTER TABLE `smart_users`
 -- AUTO_INCREMENT for table `smart_users_history`
 --
 ALTER TABLE `smart_users_history`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `smart_users_logs`
